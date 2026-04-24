@@ -217,6 +217,23 @@ void UserCode_Setup() {
 
 ---
 
+#### `UserCode_Loop()` — `/* USER CODE BEGIN LOOP */`
+Called **every loop iteration** while the system is recording, on every pass through `CoreModule_Update()`.  
+Use this block to **read sensors** continuously — the values stored here are then consumed by `UserCode_GetDataRow()` and `UserCode_UpdateDisplay()`.
+
+> **Avoid blocking calls** (`delay()`, `Serial.print()`, long computations) — they directly impact button responsiveness and sampling accuracy.
+
+```cpp
+void UserCode_Loop() {
+    /* USER CODE BEGIN LOOP */
+    rpm         = readRpm(PIN_SENSOR_RPM);
+    temperature = bmp.readTemperature();
+    /* USER CODE END LOOP */
+}
+```
+
+---
+
 #### `UserCode_UpdateDisplay()` — `/* USER CODE BEGIN UPDATE_DISPLAY */`
 Called **every loop iteration** while the system is recording.  
 You have full control of the display — use `LcdModule_ShowMessage(line0, line1)`.  

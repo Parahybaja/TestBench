@@ -22,6 +22,18 @@ void UserCode_Setup() {
 }
 
 // =============================================================
+// UserCode_Loop
+// Chamado a cada iteracao do loop durante a gravacao.
+// Qualquer tipo de bloqueio aqui impacta a frequencia de 
+// amostragem e a responsividade do botao.
+// =============================================================
+void UserCode_Loop() {
+    /* USER CODE BEGIN LOOP */
+
+    /* USER CODE END LOOP */
+}
+
+// =============================================================
 // UserCode_UpdateDisplay
 // Chamado a cada iteracao do loop durante a gravacao.
 // Controle total do display — use LcdModule_ShowMessage().

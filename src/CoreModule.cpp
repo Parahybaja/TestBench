@@ -5,6 +5,7 @@
 
 // Funções implementadas em UserCode.cpp
 extern void        UserCode_Setup();
+extern void        UserCode_Loop();
 extern void        UserCode_UpdateDisplay(uint32_t elapsedMs);
 extern void        UserCode_Stop();
 extern const char* UserCode_GetCsvHeader();              // reativar com SD
@@ -137,6 +138,10 @@ void CoreModule_Update() {
                 UserCode_UpdateDisplay(elapsed);
                 /* -------------------------------- */
             }
+
+            /* --- USER CODE LOOP --- */
+            UserCode_Loop();
+            /* ---------------------- */
 
             if (btnPressed) {
                 SdModule_StopLog();
