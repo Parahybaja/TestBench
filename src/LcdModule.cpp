@@ -22,7 +22,14 @@ static bool _recordingIndicator = false;
 
 /// Losango com buraco — caracter personalizado CGRAM slot 0
 static uint8_t charSDConnected[8] = {
-    0x16, 0x15, 0x15, 0x16, 0x10, 0x1F, 0x1F, 0x00
+    0x1C,
+    0x12,
+    0x11,
+    0x11,
+    0x11,
+    0x1F,
+    0x1F,
+    0x00
 };
 
 /***********************************************************************************************************************
