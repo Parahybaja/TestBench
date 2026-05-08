@@ -14,6 +14,7 @@
 #include "PinConfig.h"
 #include "SdModule.h"
 #include "LcdModule.h"
+#include <TimerOne.h>    // Biblioteca de timer de hardware para Arduino Uno (substitui timerBegin do ESP32)
 
 extern void        UserCode_Setup();
 extern void        UserCode_Loop();
@@ -26,7 +27,9 @@ extern const char* UserCode_GetDataRow(uint32_t elapsedMs);
  * VARIAVEIS LOCAIS
  **********************************************************************************************************************/
 
+/* --- ESP32: handle do timer de hardware Espressif (comentado) ---
 static hw_timer_t*       _timer   = nullptr;
+*/
 static volatile uint32_t _sysTick = 0;
 
 enum State { STATE_IDLE, STATE_LOGGING };
@@ -50,7 +53,13 @@ static uint32_t _lastTick        = 0;
  * @brief ISR do timer de hardware — incrementa o tick global a cada 1 ms.
  * @retval Nenhum.
  **********************************************************************************************************************/
+/* --- ESP32: IRAM_ATTR coloca a ISR na SRAM interna do chip; nao existe no AVR (comentado) ---
 void IRAM_ATTR _Timer_ISR() {
+    _sysTick++;
+}
+*/
+/* --- Arduino Uno: ISR chamada pelo TimerOne a cada 1 ms --- */
+void _Timer_ISR() {
     _sysTick++;
 }
 
@@ -100,13 +109,21 @@ static bool _Debounce_Read(bool rawInput) {
 void CoreModule_Init() {
     Serial.begin(115200);
 
+    /* --- ESP32: timer de hardware Espressif — prescaler 80 (1 tick = 1 us), alarme a cada 1000 us = 1 ms (comentado) ---
     _timer = timerBegin(0, 80, true);
     timerAttachInterrupt(_timer, &_Timer_ISR, true);
     timerAlarmWrite(_timer, 1000, true);
     timerAlarmEnable(_timer);
+    */
+    /* --- Arduino Uno: TimerOne — inicializa com periodo de 1000 us (1 ms) e registra a ISR --- */
+    Timer1.initialize(1000);
+    Timer1.attachInterrupt(_Timer_ISR);
 
     LcdModule_Init();
+    /* --- ESP32: vTaskDelay usa o escalonador FreeRTOS; portTICK_PERIOD_MS converte ms em ticks (comentado) ---
     vTaskDelay(1500 / portTICK_PERIOD_MS);
+    */
+    delay(1500); // Arduino Uno: delay() bloqueante equivalente
 
     if (!SdModule_Init()) {
         LcdModule_ShowMessage(" SDCard ERROR!  ", "");
@@ -114,7 +131,8 @@ void CoreModule_Init() {
     else {
         LcdModule_ShowMessage("   SDCard OK!   ", "");
     }
-    vTaskDelay(1500 / portTICK_PERIOD_MS);
+    /* --- ESP32 (comentado) --- vTaskDelay(1500 / portTICK_PERIOD_MS); */
+    delay(1500);
 
     pinMode(PIN_BUTTON, INPUT_PULLUP);
 

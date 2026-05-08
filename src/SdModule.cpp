@@ -17,7 +17,9 @@
  * VARIAVEIS LOCAIS
  **********************************************************************************************************************/
 
+/* --- ESP32: HSPI e o segundo barramento SPI do ESP32, com pinos remapeaveis (comentado) ---
 static SPIClass  _hspi(HSPI);
+*/
 static File      _logFile;
 static bool      _isLogging   = false;
 static uint32_t  _rowCount    = 0;
@@ -37,9 +39,12 @@ static const uint32_t FLUSH_INTERVAL_MS = 500; ///< Intervalo de flush para o SD
  * @retval false  Cartao nao detectado ou falha na montagem.
  **********************************************************************************************************************/
 bool SdModule_Init() {
+    /* --- ESP32: HSPI permite configurar pinos SPI arbitrarios; necessario passar a instancia para SD.begin (comentado) ---
     _hspi.begin(PIN_SD_CLK, PIN_SD_MISO, PIN_SD_MOSI, PIN_SD_CS);
-
     if (!SD.begin(PIN_SD_CS, _hspi)) {
+    */
+    /* --- Arduino Uno: SPI de hardware com pinos fixos (MOSI=11, MISO=12, SCK=13); apenas o CS e configuravel --- */
+    if (!SD.begin(PIN_SD_CS)) {
         Serial.println("[SD] ERRO: cartao nao detectado ou falha na montagem.");
         return false;
     }
@@ -74,7 +79,10 @@ bool SdModule_StartLog(const char* csvHeader) {
 
     _logFile = SD.open(filename, FILE_WRITE);
     if (!_logFile) {
+        /* --- ESP32: Serial.printf existe no core Espressif; nao disponivel no AVR (comentado) ---
         Serial.printf("[SD] ERRO: nao foi possivel criar %s\n", filename);
+        */
+        Serial.print("[SD] ERRO: nao foi possivel criar "); Serial.println(filename);
         return false;
     }
 
@@ -83,7 +91,8 @@ bool SdModule_StartLog(const char* csvHeader) {
     _isLogging   = true;
     _lastFlushMs = millis();
 
-    Serial.printf("[SD] Log iniciado: %s\n", filename);
+    /* --- ESP32 (comentado) --- Serial.printf("[SD] Log iniciado: %s\n", filename); */
+    Serial.print("[SD] Log iniciado: "); Serial.println(filename);
     return true;
 }
 
@@ -100,7 +109,8 @@ bool SdModule_StopLog() {
     _logFile.close();
     _isLogging = false;
 
-    Serial.printf("[SD] Log encerrado. Linhas gravadas: %lu\n", (unsigned long)_rowCount);
+    /* --- ESP32 (comentado) --- Serial.printf("[SD] Log encerrado. Linhas gravadas: %lu\n", (unsigned long)_rowCount); */
+    Serial.print("[SD] Log encerrado. Linhas gravadas: "); Serial.println(_rowCount);
     return true;
 }
 

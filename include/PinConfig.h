@@ -7,14 +7,19 @@
  **********************************************************************************************************************/
 
 /***********************************************************************************************************************
- * @addtogroup PinConfig_SD SD Card — barramento HSPI
+ * @addtogroup PinConfig_SD SD Card — barramento SPI
  * @{
  **********************************************************************************************************************/
 
-#define PIN_SD_MOSI   13   ///< D13 — MOSI
-#define PIN_SD_MISO   12   ///< D12 — MISO
-#define PIN_SD_CLK    14   ///< D14 — SCK
+/* --- ESP32: barramento HSPI com pinos remapeados (comentado) ---
+#define PIN_SD_MOSI   13   ///< D13 — MOSI (HSPI)
+#define PIN_SD_MISO   12   ///< D12 — MISO (HSPI)
+#define PIN_SD_CLK    14   ///< D14 — SCK  (HSPI)
 #define PIN_SD_CS     27   ///< D27 — Chip Select
+*/
+
+/* --- Arduino Uno: SPI de hardware fixo (MOSI=11, MISO=12, SCK=13) --- */
+#define PIN_SD_CS     10   ///< D10 — Chip Select (unico pino configuravel no Uno)
 
 /** @} PinConfig_SD */
 
@@ -23,7 +28,12 @@
  * @{
  **********************************************************************************************************************/
 
+/* --- ESP32 (comentado) ---
 #define PIN_BUTTON    26   ///< D26
+*/
+
+/* --- Arduino Uno --- */
+#define PIN_BUTTON     2   ///< D2
 
 /** @} PinConfig_Button */
 
@@ -32,8 +42,14 @@
  * @{
  **********************************************************************************************************************/
 
+/* --- ESP32: pinos I2C remapeaveis (comentado) ---
 #define PIN_LCD_SDA   32   ///< D32 — SDA
 #define PIN_LCD_SCL   33   ///< D33 — SCL
+*/
+
+/* --- Arduino Uno: SDA=A4, SCL=A5 (fixos em hardware; Wire.begin() sem argumentos) --- */
+#define PIN_LCD_SDA   A4   ///< A4 — SDA (fixo)
+#define PIN_LCD_SCL   A5   ///< A5 — SCL (fixo)
 #define LCD_I2C_ADDR  0x27 ///< Endereco I2C (alternativa: 0x3F)
 #define LCD_COLS      16   ///< Colunas do display
 #define LCD_ROWS       2   ///< Linhas do display

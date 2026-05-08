@@ -59,7 +59,10 @@ static void _WriteIndicator() {
  * @retval Nenhum.
  **********************************************************************************************************************/
 void LcdModule_Init() {
+    /* --- ESP32: Wire.begin(sda, scl) permite remapear os pinos I2C em qualquer GPIO (comentado) ---
     Wire.begin(PIN_LCD_SDA, PIN_LCD_SCL);
+    */
+    Wire.begin(); // Arduino Uno: pinos SDA=A4 e SCL=A5 sao fixos em hardware; sem argumentos
     _lcd.init();
     _lcd.backlight();
     _lcd.createChar(0, charSDConnected);
