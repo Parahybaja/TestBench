@@ -46,11 +46,11 @@ bool SdModule_Init() {
     */
     /* --- Arduino Uno: SPI de hardware com pinos fixos (MOSI=11, MISO=12, SCK=13); apenas o CS e configuravel --- */
     if (!SD.begin(PIN_SD_CS)) {
-        Serial.println("[SD] ERRO: cartao nao detectado ou falha na montagem.");
+        Serial.println(F("[SD] ERRO: cartao nao detectado ou falha na montagem."));
         return false;
     }
 
-    Serial.println("[SD] Cartao montado com sucesso.");
+    Serial.println(F("[SD] Cartao montado com sucesso."));
     return true;
 }
 
@@ -73,7 +73,7 @@ bool SdModule_StartLog(const char* csvHeader) {
             break;
         }
         if (i == 9999) {
-            Serial.println("[SD] ERRO: limite de arquivos de log atingido (9999).");
+            Serial.println(F("[SD] ERRO: limite de arquivos de log atingido (9999)."));
             return false;
         }
     }
@@ -83,7 +83,7 @@ bool SdModule_StartLog(const char* csvHeader) {
         /* --- ESP32: Serial.printf existe no core Espressif; nao disponivel no AVR (comentado) ---
         Serial.printf("[SD] ERRO: nao foi possivel criar %s\n", filename);
         */
-        Serial.print("[SD] ERRO: nao foi possivel criar "); Serial.println(filename);
+        Serial.print(F("[SD] ERRO: nao foi possivel criar ")); Serial.println(filename);
         return false;
     }
 
@@ -93,7 +93,7 @@ bool SdModule_StartLog(const char* csvHeader) {
     _lastFlushMs = millis();
 
     /* --- ESP32 (comentado) --- Serial.printf("[SD] Log iniciado: %s\n", filename); */
-    Serial.print("[SD] Log iniciado: "); Serial.println(filename);
+    Serial.print(F("[SD] Log iniciado: ")); Serial.println(filename);
     return true;
 }
 
@@ -111,7 +111,7 @@ bool SdModule_StopLog() {
     _isLogging = false;
 
     /* --- ESP32 (comentado) --- Serial.printf("[SD] Log encerrado. Linhas gravadas: %lu\n", (unsigned long)_rowCount); */
-    Serial.print("[SD] Log encerrado. Linhas gravadas: "); Serial.println(_rowCount);
+    Serial.print(F("[SD] Log encerrado. Linhas gravadas: ")); Serial.println(_rowCount);
     return true;
 }
 

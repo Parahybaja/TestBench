@@ -33,7 +33,8 @@
 */
 
 /* --- Arduino Uno --- */
-#define PIN_BUTTON     6   ///< D6
+#define PIN_BUTTON      5   ///< D5 — entrada do botao
+#define PIN_BUTTON_GND  3   ///< D3 — OUTPUT LOW, serve como GND virtual para o botao
 
 /** @} PinConfig_Button */
 

@@ -40,7 +40,7 @@ static uint32_t _logStartMs = 0;
 static uint32_t _lastLogMs  = 0;
 static bool     _btnPrev    = false;
 
-static const uint8_t DEBOUNCE_TICKS = 10; ///< Janela de debounce em ms
+static const uint8_t DEBOUNCE_TICKS = 50; ///< Janela de debounce em ms
 
 static bool     _debouncedBtn    = false;
 static uint8_t  _debounceCounter = 0;
@@ -135,14 +135,16 @@ void CoreModule_Init() {
     /* --- ESP32 (comentado) --- vTaskDelay(1500 / portTICK_PERIOD_MS); */
     delay(1500);
 
-    pinMode(PIN_BUTTON, INPUT_PULLUP);
+    pinMode(PIN_BUTTON_GND, OUTPUT);
+    digitalWrite(PIN_BUTTON_GND, LOW);  // GND virtual para o botao
+    pinMode(PIN_BUTTON, INPUT_PULLUP);  // pull-up interno: pino HIGH em repouso, LOW ao pressionar
 
     /* --- USER CODE SETUP ---- */
     UserCode_Setup();
     /* ------------------------ */
 
     LcdModule_ShowMessage("Pressione B1 p/", "comecar teste");
-    Serial.println("[CORE] Sistema pronto.");
+    Serial.println(F("[CORE] Sistema pronto."));
 }
 
 /***********************************************************************************************************************
@@ -167,7 +169,7 @@ void CoreModule_Update() {
                 LcdModule_ShowMessage("", "");
                 _logStartMs = _GetMs();
                 _state      = STATE_LOGGING;
-                Serial.println("[CORE] Gravacao iniciada.");
+                Serial.println(F("[CORE] Gravacao iniciada."));
             }
             break;
 
@@ -177,7 +179,7 @@ void CoreModule_Update() {
                 _lastLogMs = _GetMs();
                 if (!SdModule_WriteLine(UserCode_GetDataRow(elapsed))) {
                     LcdModule_SetRecordingIndicator(false);
-                    Serial.println("[CORE] Erro ao escrever linha no SD.");
+                    Serial.println(F("[CORE] Erro ao escrever linha no SD."));
                 }
 
                 /* --- USER CODE UPDATE DISPLAY --- */
@@ -194,7 +196,7 @@ void CoreModule_Update() {
                 LcdModule_SetRecordingIndicator(false);
                 _state = STATE_IDLE;
                 LcdModule_ShowMessage("Pressione B1 p/", "comecar teste");
-                Serial.println("[CORE] Gravacao encerrada.");
+                Serial.println(F("[CORE] Gravacao encerrada."));
 
                 /* --- USER CODE STOP LOGGING --- */
                 UserCode_Stop();
