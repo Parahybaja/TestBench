@@ -1,6 +1,7 @@
 /***********************************************************************************************************************
  * @file LcdModule.cpp
  * @addtogroup LcdModule
+ * @author  Gabriel Domingos
  * @brief Implementacao do modulo de display LCD I2C.
  **********************************************************************************************************************/
 
@@ -84,11 +85,11 @@ void LcdModule_ShowMessage(const char* line0, const char* line1) {
     _lcd.clear();
 
     _lcd.setCursor(0, 0);
-    snprintf(buf, sizeof(buf), "%-*.*s", LCD_COLS - 1, LCD_COLS - 1, line0);
+    snprintf(buf, sizeof(buf), "%-15s", line0);
     _lcd.print(buf);
 
     _lcd.setCursor(0, 1);
-    snprintf(buf, sizeof(buf), "%-*s", LCD_COLS, line1);
+    snprintf(buf, sizeof(buf), "%-16s", line1);
     _lcd.print(buf);
 
     _WriteIndicator();

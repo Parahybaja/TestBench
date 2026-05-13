@@ -2,6 +2,7 @@
  * @file UserCode.cpp
  * @addtogroup UserCode
  * @brief Codigo de usuario — unico arquivo a ser editado entre testes.
+ * @author  Gabriel Domingos
  * @details Implementa os hooks chamados pelo CoreModule durante a sessao de gravacao.
  *          Edite apenas as regioes delimitadas por USER CODE BEGIN / END.
  **********************************************************************************************************************/

@@ -33,7 +33,7 @@
 */
 
 /* --- Arduino Uno --- */
-#define PIN_BUTTON     2   ///< D2
+#define PIN_BUTTON     6   ///< D6
 
 /** @} PinConfig_Button */
 

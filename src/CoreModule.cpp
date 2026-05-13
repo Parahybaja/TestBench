@@ -2,6 +2,7 @@
  * @file CoreModule.cpp
  * @addtogroup CoreModule
  * @brief Implementacao do modulo principal — maquina de estados e ciclo de atualizacao.
+ * @author  Gabriel Domingos
  * @details Responsavel pelo timer de 1 ms via hardware, debounce do botao e maquina de estados
  *          IDLE <-> LOGGING. Nao editar entre testes.
  **********************************************************************************************************************/
